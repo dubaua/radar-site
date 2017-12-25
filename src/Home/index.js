@@ -1,32 +1,22 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { Link as RLink } from "react-router-dom";
-import { Title } from "../Styles";
+import { Route, Link as RLink } from "react-router-dom";
+import { Title, Header, Section, Tags, Toggle } from "../Styles";
 import "swiper/dist/css/swiper.min.css";
+import Card from "../Works/Card";
+import Filter from "../Works/Filter";
 import Swiper from "react-id-swiper";
 import Colors from "../Colors";
 import Banner from "../Banner";
-import GoogleMap from "../GoogleMap";
+import Locations from "../Contact/Locations";
 import Footer from "../Footer";
-import Card from "./Card";
-import Filter from "./Filter";
-import Toggle from "./Toggle";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
 
-const Header = styled.div`
-  align-items: baseline;
-  display: flex;
-  margin-bottom: 24px;
-`;
-
-const Tags = styled.div`
-  flex-grow: 1;
-  font-size: 18px;
-  display: flex;
-  align-items: baseline;
-  margin-left: 32px;
+const Client = styled.img`
+  max-width: 100%;
+  height: auto;
 `;
 
 const Button = styled(RLink)`
@@ -43,35 +33,6 @@ const Button = styled(RLink)`
   &:hover {
     color: white;
     background: ${Colors.scarlet};
-  }
-`;
-
-const Section = styled.section`
-  margin: 48px 0 80px;
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-`;
-
-const Client = styled.img`
-  max-width: 100%;
-  height: auto;
-`;
-
-const Location = styled.div`
-  font-size: 18px;
-  display: flex;
-  align-items: baseline;
-  margin-left: 32px;
-`;
-
-const Address = styled.address`
-  font-style: normal;
-  margin-left: 32px;
-
-  & a {
-    display: block;
-    color: inherit;
   }
 `;
 
@@ -115,268 +76,6 @@ const banners = [
     description:
       "Разработка торговой марки и рекламных материалов для линейки полуфабрикатов",
     isInverse: true
-  }
-];
-
-const works = [
-  {
-    previewUrl: "http://radar-online.ru/img/yasnosolnishko/prev.png",
-    slug: "yasnosolnishko.html",
-    tags: ["Дизайн", "События"],
-    title: "Ясно солнышко",
-    description:
-      "Серия специальных мероприятий с интеграцией в дни города для бренда каш «Ясно солнышко»."
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/21century-2/prev.jpg",
-    slug: "city21vek-2.html",
-    tags: ["Дизайн"],
-    title: "Сити XXI век",
-    description: "Рекламная кампания"
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/glicelax/prev.png",
-    slug: "glicelax.html",
-    tags: ["Дизайн", "Digital"],
-    title: "Glicelax",
-    description: "Разработка продуктового сайта для препарата «Глицелакс»"
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/globus/prev.jpg",
-    slug: "globus.html",
-    tags: ["Дизайн", "Брендинг"],
-    title: "Globus",
-    description: "Key visual для десятилетия сети гипермаркетов Globus в России"
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/voyage/prev.jpg",
-    slug: "voyage.html",
-    tags: ["Дизайн", "Брендинг"],
-    title: "Voyage",
-    description: "Разработка бренда производителя антисептических средств"
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/scovo-black-diamond/prev.jpg",
-    slug: "scovo-black-diamond.html",
-    tags: ["Дизайн", "Брендинг"],
-    title: "Scovo",
-    description: "Дизайн-концепция для упаковки сковородок серии Black Diamond"
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/opticcenter/prev.jpg",
-    slug: "opticcenter.html",
-    tags: ["Дизайн", "Брендинг"],
-    title: "ОптикЦентр",
-    description:
-      "Репозициониорвание бренда «ОптикЦентр», запуск рекламной кампании"
-  },
-  {
-    previewUrl: "http://radar-online.ru/img/greennation/prev.jpg",
-    slug: "greennation.html",
-    tags: ["Дизайн", "Брендинг"],
-    title: "Greennation",
-    description: "Разработка бренда производителя зерновых культур"
-  }
-  // {
-  //   previewUrl: "http://radar-online.ru/img/yaroslavsky/prev.jpg",
-  //   slug: "yaroslavsky.html",
-  //   title: "Ярославский",
-  //   description: "Коммуникационное сопровождение розыгрыша квартиры"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru//img/adamas/prev.jpg",
-  //   slug: "adamas.html",
-  //   title: "Адамас",
-  //   description: "Концепция стимулирующей акции для сети ювелирных салонов"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/championship/prev.jpg",
-  //   slug: "championship.html",
-  //   title: "Чемпионат России по фигурному катанию",
-  //   description: "Видеоролик"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/21century_new/prev.jpg",
-  //   slug: "city21vek.html",
-  //   title: "Сити XXI век девелоперская компания",
-  //   description: "Концепция календаря и открытки для компании"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/kanikuli/prev.jpg",
-  //   slug: "kanikuli.html",
-  //   title: "Дачный посёлок «Каникулы»",
-  //   description: "Нейминг и фирменный стиль"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/markopolo/prev.jpg",
-  //   slug: "markopolo.html",
-  //   title: "Марко Поло",
-  //   description: "Брендинг детского развивающего центра"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/nikola/prev.jpg",
-  //   slug: "nikola.html",
-  //   title: "Уральские пельмени на Николу Зимнего — 2016",
-  //   description: "Фольклорно-гастрономический фестиваль"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pryanichnoe/prev.jpg",
-  //   slug: "pryanichnoe.html",
-  //   title: "Пряничное настроение",
-  //   description: "SMM-кампания"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/yit/prev.jpg",
-  //   slug: "yit.html",
-  //   title: "ЖК «Финский залив»",
-  //   description:
-  //     "Позиционирование, фирменный стиль, коммуникационная стратегия и рекламные материалы"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/androdoz/prev.jpg",
-  //   slug: "androdoz.html",
-  //   title: "Андродоз",
-  //   description: "Упаковка препарата для STADA"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/gagarin/prev.jpg",
-  //   slug: "gagarin.html",
-  //   title: "Интегрированная кампания «Парк Гагарина»",
-  //   description:
-  //     "Навигационная система для парка Гагарина в офлайне и онлайне. Приложение вошло в рейтинг «Лучшие новые приложения» в App Store"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/21century/prev.jpg",
-  //   slug: "cityxxi.html",
-  //   title: "Сити-XXI век",
-  //   description: "Рекламная кампания"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/kalinka/prev.jpg",
-  //   slug: "kalinka.html",
-  //   title: "Калинка",
-  //   description:
-  //     "Разработка платформы бренда и рекламная кампания «Мамина забота не знает границ»"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/ambarel/prev.jpg",
-  //   slug: "ambarel.html",
-  //   title: "Амбарель",
-  //   description: "Дизайн упаковки и каталога продукции"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/sbx/prev.jpg",
-  //   slug: "sbx.html",
-  //   title: "Этап Кубка мира по сноуборд-кроссу 2016 года",
-  //   description: "Продвижение в социальных медиа"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/kub/prev.jpg",
-  //   slug: "kub.html",
-  //   title: "Мебельный центр «Куб»",
-  //   description: "Производство ТВ-ролика"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-9.jpg",
-  //   slug: "belkit.html",
-  //   title: "Белый кит",
-  //   description: "Разработка позиционирования для стоматологии"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/ariant-premium/prev.jpg",
-  //   slug: "ariant-premium.html",
-  //   title: "Ариант премиум",
-  //   description:
-  //     "Видеоролик и рекламная кампания для линейки премиальной продукции"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/tavriya/prev.jpg",
-  //   slug: "tavriya.html",
-  //   title: "Таврия",
-  //   description: "Имиджевый рекламный видеоролик «Книга рецептов»"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/unichel/prev.jpg",
-  //   slug: "unichel.html",
-  //   title: "Юничел",
-  //   description: "ТВ-ролик с Розой Сябитовой"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/chepfa/prev.jpg",
-  //   slug: "cheb-ptica.html",
-  //   title: "Чебаркульская птица",
-  //   description: "Рекламная кампания «Яйцо с ярким желтком»"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-1.jpg",
-  //   slug: "testo.html",
-  //   title: "Тесто + Мясо",
-  //   description:
-  //     "Разработка торговой марки и рекламных материалов для линейки полуфабрикатов"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-2.jpg",
-  //   slug: "citrus.html",
-  //   title: "Citrus Fitness",
-  //   description:
-  //     "Разработка логотипа и фирменного стиля для крупнейшего в Челябинске фитнес-центра"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-3.jpg",
-  //   slug: "scovo.html",
-  //   title: "Scovo",
-  //   description: "Разработка дизайна упаковки линеек сковород"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-11.jpg",
-  //   slug: "kazhdij-den.html",
-  //   title: "Каждый день с вами",
-  //   description: "Редизайн, концепция и рекламные материалы торговой марки"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-5.jpg",
-  //   slug: "ariant.html",
-  //   title: "Kid’s Menu от «Арианта»",
-  //   description: "Разработка и запуск детской линейки продуктов питания"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-10.jpg",
-  //   slug: "chf.html",
-  //   title: "Фестиваль «ЧестФест»",
-  //   description: "Промо фестиваля в социальных медиа"
-  // },
-  // {
-  //   previewUrl: "http://radar-online.ru/img/pro-4.jpg",
-  //   slug: "idel.html",
-  //   title: "Idel Tower",
-  //   description: "Брендинг первого небоскреба в Уфе"
-  // }
-];
-
-const tags = [
-  {
-    id: 1,
-    title: "Брендинг"
-  },
-  {
-    id: 2,
-    title: "Кампании"
-  },
-  {
-    id: 3,
-    title: "Видео"
-  },
-  {
-    id: 4,
-    title: "Digital"
-  },
-  {
-    id: 5,
-    title: "Дизайн"
-  },
-  {
-    id: 6,
-    title: "События"
   }
 ];
 
@@ -431,39 +130,278 @@ const clients = [
   require("../img/clients/48.jpg")
 ];
 
-const locations = [
+const works = [
   {
-    title: "Москва",
-    address:
-      "БЦ АРМА, стр. 18, оф. 4 Нижний Сусальный переулок, 5 Москва, Россия, 105064",
-    phone: "+7 (495) 602-03-99",
-    phoneLink: "+74956020399",
-    center: {
-      lat: 55.758929,
-      lng: 37.664464
-    },
-    zoom: 17
+    previewUrl: "http://radar-online.ru/img/yasnosolnishko/prev.png",
+    slug: "yasnosolnishko",
+    tags: ["Дизайн", "События"],
+    title: "Ясно солнышко",
+    description:
+      "Серия специальных мероприятий с интеграцией в дни города для бренда каш «Ясно солнышко»."
   },
   {
-    title: "Челябинск",
-    address:
-      "АКЦ «Челябинск Сити», офис 1209, ул. Кирова, 159, Челябинск, Россия, 454000",
-    phone: "+7 (351) 211-11-50",
-    phoneLink: "+73512111150",
-    center: {
-      lat: 55.16478990853108,
-      lng: 61.40119045972824
-    },
-    zoom: 17
+    previewUrl: "http://radar-online.ru/img/21century-2/prev.jpg",
+    slug: "city21vek-2",
+    tags: ["Дизайн"],
+    title: "Сити XXI век",
+    description: "Рекламная кампания"
+  },
+  {
+    previewUrl: "http://radar-online.ru/img/glicelax/prev.png",
+    slug: "glicelax",
+    tags: ["Дизайн", "Digital"],
+    title: "Glicelax",
+    description: "Разработка продуктового сайта для препарата «Глицелакс»"
+  },
+  {
+    previewUrl: "http://radar-online.ru/img/globus/prev.jpg",
+    slug: "globus",
+    tags: ["Дизайн", "Брендинг"],
+    title: "Globus",
+    description: "Key visual для десятилетия сети гипермаркетов Globus в России"
+  },
+  {
+    previewUrl: "http://radar-online.ru/img/voyage/prev.jpg",
+    slug: "voyage",
+    tags: ["Дизайн", "Брендинг"],
+    title: "Voyage",
+    description: "Разработка бренда производителя антисептических средств"
+  },
+  {
+    previewUrl: "http://radar-online.ru/img/scovo-black-diamond/prev.jpg",
+    slug: "scovo-black-diamond",
+    tags: ["Дизайн", "Брендинг"],
+    title: "Scovo",
+    description: "Дизайн-концепция для упаковки сковородок серии Black Diamond"
+  },
+  {
+    previewUrl: "http://radar-online.ru/img/opticcenter/prev.jpg",
+    slug: "opticcenter",
+    tags: ["Дизайн", "Брендинг"],
+    title: "ОптикЦентр",
+    description:
+      "Репозициониорвание бренда «ОптикЦентр», запуск рекламной кампании"
+  },
+  {
+    previewUrl: "http://radar-online.ru/img/greennation/prev.jpg",
+    slug: "greennation",
+    tags: ["Дизайн", "Брендинг"],
+    title: "Greennation",
+    description: "Разработка бренда производителя зерновых культур"
+  }
+  // {
+  //   previewUrl: "http://radar-online.ru/img/yaroslavsky/prev.jpg",
+  //   slug: "yaroslavsky",
+  //   title: "Ярославский",
+  //   description: "Коммуникационное сопровождение розыгрыша квартиры"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru//img/adamas/prev.jpg",
+  //   slug: "adamas",
+  //   title: "Адамас",
+  //   description: "Концепция стимулирующей акции для сети ювелирных салонов"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/championship/prev.jpg",
+  //   slug: "championship",
+  //   title: "Чемпионат России по фигурному катанию",
+  //   description: "Видеоролик"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/21century_new/prev.jpg",
+  //   slug: "city21vek",
+  //   title: "Сити XXI век девелоперская компания",
+  //   description: "Концепция календаря и открытки для компании"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/kanikuli/prev.jpg",
+  //   slug: "kanikuli",
+  //   title: "Дачный посёлок «Каникулы»",
+  //   description: "Нейминг и фирменный стиль"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/markopolo/prev.jpg",
+  //   slug: "markopolo",
+  //   title: "Марко Поло",
+  //   description: "Брендинг детского развивающего центра"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/nikola/prev.jpg",
+  //   slug: "nikola",
+  //   title: "Уральские пельмени на Николу Зимнего — 2016",
+  //   description: "Фольклорно-гастрономический фестиваль"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pryanichnoe/prev.jpg",
+  //   slug: "pryanichnoe",
+  //   title: "Пряничное настроение",
+  //   description: "SMM-кампания"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/yit/prev.jpg",
+  //   slug: "yit",
+  //   title: "ЖК «Финский залив»",
+  //   description:
+  //     "Позиционирование, фирменный стиль, коммуникационная стратегия и рекламные материалы"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/androdoz/prev.jpg",
+  //   slug: "androdoz",
+  //   title: "Андродоз",
+  //   description: "Упаковка препарата для STADA"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/gagarin/prev.jpg",
+  //   slug: "gagarin",
+  //   title: "Интегрированная кампания «Парк Гагарина»",
+  //   description:
+  //     "Навигационная система для парка Гагарина в офлайне и онлайне. Приложение вошло в рейтинг «Лучшие новые приложения» в App Store"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/21century/prev.jpg",
+  //   slug: "cityxxi",
+  //   title: "Сити-XXI век",
+  //   description: "Рекламная кампания"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/kalinka/prev.jpg",
+  //   slug: "kalinka",
+  //   title: "Калинка",
+  //   description:
+  //     "Разработка платформы бренда и рекламная кампания «Мамина забота не знает границ»"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/ambarel/prev.jpg",
+  //   slug: "ambarel",
+  //   title: "Амбарель",
+  //   description: "Дизайн упаковки и каталога продукции"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/sbx/prev.jpg",
+  //   slug: "sbx",
+  //   title: "Этап Кубка мира по сноуборд-кроссу 2016 года",
+  //   description: "Продвижение в социальных медиа"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/kub/prev.jpg",
+  //   slug: "kub",
+  //   title: "Мебельный центр «Куб»",
+  //   description: "Производство ТВ-ролика"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-9.jpg",
+  //   slug: "belkit",
+  //   title: "Белый кит",
+  //   description: "Разработка позиционирования для стоматологии"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/ariant-premium/prev.jpg",
+  //   slug: "ariant-premium",
+  //   title: "Ариант премиум",
+  //   description:
+  //     "Видеоролик и рекламная кампания для линейки премиальной продукции"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/tavriya/prev.jpg",
+  //   slug: "tavriya",
+  //   title: "Таврия",
+  //   description: "Имиджевый рекламный видеоролик «Книга рецептов»"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/unichel/prev.jpg",
+  //   slug: "unichel",
+  //   title: "Юничел",
+  //   description: "ТВ-ролик с Розой Сябитовой"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/chepfa/prev.jpg",
+  //   slug: "cheb-ptica",
+  //   title: "Чебаркульская птица",
+  //   description: "Рекламная кампания «Яйцо с ярким желтком»"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-1.jpg",
+  //   slug: "testo",
+  //   title: "Тесто + Мясо",
+  //   description:
+  //     "Разработка торговой марки и рекламных материалов для линейки полуфабрикатов"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-2.jpg",
+  //   slug: "citrus",
+  //   title: "Citrus Fitness",
+  //   description:
+  //     "Разработка логотипа и фирменного стиля для крупнейшего в Челябинске фитнес-центра"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-3.jpg",
+  //   slug: "scovo",
+  //   title: "Scovo",
+  //   description: "Разработка дизайна упаковки линеек сковород"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-11.jpg",
+  //   slug: "kazhdij-den",
+  //   title: "Каждый день с вами",
+  //   description: "Редизайн, концепция и рекламные материалы торговой марки"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-5.jpg",
+  //   slug: "ariant",
+  //   title: "Kid’s Menu от «Арианта»",
+  //   description: "Разработка и запуск детской линейки продуктов питания"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-10.jpg",
+  //   slug: "chf",
+  //   title: "Фестиваль «ЧестФест»",
+  //   description: "Промо фестиваля в социальных медиа"
+  // },
+  // {
+  //   previewUrl: "http://radar-online.ru/img/pro-4.jpg",
+  //   slug: "idel",
+  //   title: "Idel Tower",
+  //   description: "Брендинг первого небоскреба в Уфе"
+  // }
+];
+
+const tags = [
+  {
+    id: 1,
+    slug: "branding",
+    title: "Брендинг"
+  },
+  {
+    id: 2,
+    slug: "campaign",
+    title: "Кампании"
+  },
+  {
+    id: 3,
+    slug: "video",
+    title: "Видео"
+  },
+  {
+    id: 4,
+    slug: "digital",
+    title: "Digital"
+  },
+  {
+    id: 5,
+    slug: "design",
+    title: "Дизайн"
+  },
+  {
+    id: 6,
+    slug: "event",
+    title: "События"
   }
 ];
 
 class Home extends Component {
   state = {
     tags: tags,
-    currentTag: "Все",
-    locations: locations,
-    currentLocation: locations[0]
+    currentTag: "Все"
   };
 
   toggleFilter = tag => {
@@ -476,7 +414,6 @@ class Home extends Component {
   resetFilters = () => {
     this.setState({ currentTag: "Все" });
   };
-
   render() {
     const spotlightParams = {
       speed: 400,
@@ -553,7 +490,11 @@ class Home extends Component {
                   />
                 ))}
               </Tags>
-              <Button to="works">Все работы</Button>
+              <Route
+                exact
+                path="/"
+                render={() => <Button to="works">Все работы</Button>}
+              />
             </Header>
             <Row>
               {filteredWorks.map((work, index) => (
@@ -576,39 +517,8 @@ class Home extends Component {
             </Swiper>
           </Grid>
         </Section>
-
-        <Section>
-          <Grid>
-            <Header>
-              <Title>Контакты</Title>
-              <Location>
-                {this.state.locations.map((location, index) => (
-                  <Toggle
-                    key={index.toString()}
-                    onClick={() => {
-                      this.setState({
-                        currentLocation: location
-                      });
-                    }}
-                    active={this.state.currentLocation.title === location.title}
-                  >
-                    {location.title}
-                  </Toggle>
-                ))}
-              </Location>
-              <Address>{this.state.currentLocation.address}</Address>
-              <Address>
-                <a href={"tel:" + this.state.currentLocation.phoneLink}>
-                  {this.state.currentLocation.phone}
-                </a>
-                <a href="mailto:info@radar-online.ru">info@radar-online.ru</a>
-              </Address>
-            </Header>
-          </Grid>
-          <GoogleMap
-            center={this.state.currentLocation.center}
-            zoom={this.state.currentLocation.zoom}
-          />
+        <Section last>
+          <Locations />
         </Section>
         <Footer />
       </Wrapper>

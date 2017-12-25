@@ -1,5 +1,5 @@
 import React from "react";
-import Toggle from "./Toggle";
+import { Toggle } from "../Styles";
 
 class Filter extends React.Component {
   handleClick = () => {

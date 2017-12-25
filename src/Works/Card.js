@@ -48,11 +48,11 @@ const Description = styled.p`
   line-height: 1.3;
 `;
 
-class Banner extends Component {
+class Card extends Component {
   render() {
     const card = this.props.data;
     return (
-      <Link to={card.slug}>
+      <Link to={"/works/" + card.slug}>
         <Cover src={card.previewUrl} />
         <Overlay>
           <Title>{card.title}</Title>
@@ -63,4 +63,4 @@ class Banner extends Component {
   }
 }
 
-export default Banner;
+export default Card;

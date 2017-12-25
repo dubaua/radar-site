@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "slug": "branding",
+    "title": "Брендинг"
+  },
+  {
+    "id": 2,
+    "slug": "campaign",
+    "title": "Кампании"
+  },
+  {
+    "id": 3,
+    "slug": "video",
+    "title": "Видео"
+  },
+  {
+    "id": 4,
+    "slug": "digital",
+    "title": "Digital"
+  },
+  {
+    "id": 5,
+    "slug": "design",
+    "title": "Дизайн"
+  },
+  {
+    "id": 6,
+    "slug": "event",
+    "title": "События"
+  }
+]

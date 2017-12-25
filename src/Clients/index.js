@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { Title } from "../Styles";
+import { Page, Section, Title } from "../Styles";
 import Footer from "../Footer";
 import styled from "styled-components";
 
@@ -199,14 +199,6 @@ const clients = [
   }
 ];
 
-const Page = styled.div`
-  padding-top: 50px;
-`;
-
-const Clients = styled.section`
-  padding: 48px 0;
-`;
-
 const Header = styled.div`
   margin-bottom: 24px;
 `;
@@ -224,7 +216,7 @@ const Logo = styled.img`
 export default () => {
   return (
     <Page>
-      <Clients>
+      <Section>
         <Grid>
           <Header>
             <Row middle="xs">
@@ -246,7 +238,7 @@ export default () => {
             ))}
           </Row>
         </Grid>
-      </Clients>
+      </Section>
       <Footer />
     </Page>
   );
