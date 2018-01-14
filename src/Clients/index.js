@@ -213,33 +213,50 @@ const Logo = styled.img`
   height: auto;
 `;
 
-export default () => {
-  return (
-    <Page>
-      <Section>
-        <Grid>
-          <Header>
-            <Row middle="xs">
-              <Col xs={7}>
-                <Title>Наши клиенты</Title>
-              </Col>
-              <Col xs={5}>
-                <p>Текст о клиентах</p>
-              </Col>
+class Clients extends React.Component {
+  state = {
+    clients: null
+  };
+
+  componentWillMount() {
+    fetch("http://radar.dubaua.ru/api/server.php?getClients")
+      .then(res => res.json())
+      .then(response => {
+        this.setState({ clients: response.clients });
+      });
+  }
+
+  render() {
+    return (
+      <Page>
+        <Section>
+          <Grid>
+            <Header>
+              <Row middle="xs">
+                <Col xs={7}>
+                  <Title>Наши клиенты</Title>
+                </Col>
+                <Col xs={5}>
+                  <p>Текст о клиентах</p>
+                </Col>
+              </Row>
+            </Header>
+            <Row>
+              {this.state.clients &&
+                this.state.clients.map((client, index) => (
+                  <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
+                    <Client>
+                      <Logo src={client.imageUrl} alt={client.name} />
+                    </Client>
+                  </Col>
+                ))}
             </Row>
-          </Header>
-          <Row>
-            {clients.map((client, index) => (
-              <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
-                <Client>
-                  <Logo src={client.imageUrl} alt={client.name} />
-                </Client>
-              </Col>
-            ))}
-          </Row>
-        </Grid>
-      </Section>
-      <Footer />
-    </Page>
-  );
-};
+          </Grid>
+        </Section>
+        <Footer />
+      </Page>
+    );
+  }
+}
+
+export default Clients;

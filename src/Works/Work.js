@@ -13,6 +13,10 @@ const Case = styled.section`
 
 const Block = styled.div``;
 
+const Layout = styled.div`
+  line-height: 0;
+`;
+
 const About = styled.section`
   background: #efeff1;
   min-width: 250px;
@@ -128,39 +132,45 @@ class Work extends React.Component {
               <Col xs={8}>
                 <img src={work.logoUrl} alt={work.title} />
               </Col>
-              {work.layout.map((pad, index) => (
-                <Col key={index.toString()} xs={pad.width}>
-                  {pad.content.map((block, index2) => (
-                    <Block key={index2.toString()}>
-                      {block.length > 1 ? (
-                        <Swiper
-                          {...spotlightParams}
-                          pagination={spotlightParams.pagination}
-                        >
-                          {block.map((banner, index3) => (
-                            <div
-                              className="swiper-slide"
-                              key={index3.toString()}
-                            >
-                              <img
-                                src={banner}
-                                alt={
-                                  work.title + " " + (index + index2 + index3)
-                                }
-                              />
-                            </div>
-                          ))}
-                        </Swiper>
-                      ) : (
-                        <img
-                          src={block[0]}
-                          alt={work.title + " " + (index + index2)}
-                        />
-                      )}
-                    </Block>
-                  ))}
-                </Col>
-              ))}
+            </Row>
+            <Layout>
+              <Row>
+                {work.layout.map((pad, index) => (
+                  <Col key={index.toString()} xs={pad.width}>
+                    {pad.content.map((block, index2) => (
+                      <Block key={index2.toString()}>
+                        {block.length > 1 ? (
+                          <Swiper
+                            {...spotlightParams}
+                            pagination={spotlightParams.pagination}
+                          >
+                            {block.map((banner, index3) => (
+                              <div
+                                className="swiper-slide"
+                                key={index3.toString()}
+                              >
+                                <img
+                                  src={banner}
+                                  alt={
+                                    work.title + " " + (index + index2 + index3)
+                                  }
+                                />
+                              </div>
+                            ))}
+                          </Swiper>
+                        ) : (
+                          <img
+                            src={block[0]}
+                            alt={work.title + " " + (index + index2)}
+                          />
+                        )}
+                      </Block>
+                    ))}
+                  </Col>
+                ))}
+              </Row>
+            </Layout>
+            <Row>
               <Col xsOffset={3} xs={3}>
                 {work.team}
               </Col>

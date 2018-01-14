@@ -280,42 +280,59 @@ const Position = styled.div`
   font-size: 14px;
 `;
 
-export default () => {
-  return (
-    <Page>
-      <Section>
-        <Grid>
-          <Header>
-            <Row middle="xs">
-              <Col xs={7}>
-                <Title>Команда</Title>
-              </Col>
-              <Col xs={5}>
-                <p>
-                  Наше агентство всегда открыто для перспективных специалистов.
-                  Если вы&nbsp;хотите работать в&nbsp;команде RADAR, присылайте
-                  свое резюме на&nbsp;адрес{" "}
-                  <a href="mailto:job@radar-online.ru">job@radar-online.ru</a>
-                </p>
-              </Col>
+class Team extends React.Component {
+  state = {
+    team: null
+  };
+
+  componentWillMount() {
+    fetch("http://radar.dubaua.ru/api/server.php?getTeam")
+      .then(res => res.json())
+      .then(response => {
+        this.setState({ team: response.team });
+      });
+  }
+
+  render() {
+    return (
+      <Page>
+        <Section>
+          <Grid>
+            <Header>
+              <Row middle="xs">
+                <Col xs={7}>
+                  <Title>Команда</Title>
+                </Col>
+                <Col xs={5}>
+                  <p>
+                    Наше агентство всегда открыто для перспективных
+                    специалистов. Если вы&nbsp;хотите работать в&nbsp;команде
+                    RADAR, присылайте свое резюме на&nbsp;адрес
+                    <a href="mailto:job@radar-online.ru">job@radar-online.ru</a>
+                  </p>
+                </Col>
+              </Row>
+            </Header>
+            <Row>
+              {this.state.team &&
+                this.state.team.map((member, index) => (
+                  <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
+                    <Member>
+                      <Photo src={member.imageUrl} alt={member.name} />
+                      <Overlay>
+                        <Name>{member.name}</Name>
+                        <Position>{member.position}</Position>
+                      </Overlay>
+                    </Member>
+                  </Col>
+                ))}
             </Row>
-          </Header>
-          <Row>
-            {team.map((member, index) => (
-              <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
-                <Member>
-                  <Photo src={member.imageUrl} alt={member.name} />
-                  <Overlay>
-                    <Name>{member.name}</Name>
-                    <Position>{member.position}</Position>
-                  </Overlay>
-                </Member>
-              </Col>
-            ))}
-          </Row>
-        </Grid>
-      </Section>
-      <Footer />
-    </Page>
-  );
-};
+          </Grid>
+        </Section>
+        <Footer />
+      </Page>
+    );
+  }
+}
+
+export default Team;

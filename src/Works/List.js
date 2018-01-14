@@ -109,7 +109,9 @@ class Works extends Component {
     )
       .then(res => res.json())
       .then(tags => {
-        this.setState({ tags: tags.entries });
+        if (tags) {
+          this.setState({ tags: tags.entries });
+        }
       });
   }
 
