@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
+import renderHTML from "react-render-html";
 import { Title } from "../Styles";
 import Footer from "../Footer";
 import styled from "styled-components";
@@ -24,45 +25,51 @@ const Content = styled.section`
   }
 `;
 
-export default () => {
-  return (
-    <Page>
-      <Content>
-        <Grid>
-          <Row>
-            <Col xs={12}>
-              <Title>О нас</Title>
-            </Col>
-            <Col xs={12} lg={5}>
-              <p>
-                Коммуникационное агентство Radar основано в&nbsp;2007 году
-                в&nbsp;Челябинске. Наши достижения&nbsp;&mdash; это наши
-                проекты, которые живут, решают поставленные задачи
-                и&nbsp;приносят прибыль клиентам. Наши клиенты&nbsp;&mdash;
-                компании, которые производят лучший продукт и оказывают лучшие
-                услуги, смотрят в&nbsp;будущее и&nbsp;думают о&nbsp;своей
-                аудитории. Наша команда&nbsp;&mdash; профессионалы, которые
-                каждый день сами себе повышают планку.
-              </p>
-            </Col>
-            <Col xs={12} lg={5}>
-              <p>
-                Мы&nbsp;знаем, что только так можно становиться лучше, брать
-                амбициозные задачи и&nbsp;отлично решать&nbsp;их, завоевывая
-                сердца клиентов, и&nbsp;создавать бренды, которые покорят умы
-                аудитории.
-              </p>
-              <p>
-                В&nbsp;2014 году мы&nbsp;открыли офис в&nbsp;Москве.
-                Мы&nbsp;стали ближе к&nbsp;своим клиентам и&nbsp;помогаем
-                эффективно выстраивать коммуникации с&nbsp;брендами по&nbsp;всей
-                России.
-              </p>
-            </Col>
-          </Row>
-        </Grid>
-      </Content>
-      <Footer />
-    </Page>
-  );
-};
+class About extends React.Component {
+  state = {
+    title: "",
+    column1: "",
+    column2: ""
+  };
+
+  componentWillMount() {
+    fetch(
+      `http://radarapi.dubaua.ru/api/regions/data/aboutUs?token=${
+        process.env.REACT_APP_COCKPIT_KEY
+      }`
+    )
+      .then(response => response.json())
+      .then(blob => {
+        this.setState({
+          title: blob.title,
+          column1: blob.column1,
+          column2: blob.column2
+        });
+      });
+  }
+
+  render() {
+    return (
+      <Page>
+        <Content>
+          <Grid>
+            <Row>
+              <Col xs={12}>
+                <Title>{this.state.title}</Title>
+              </Col>
+              <Col xs={12} lg={5}>
+                {renderHTML(this.state.column1)}
+              </Col>
+              <Col xs={12} lg={5}>
+                {renderHTML(this.state.column2)}
+              </Col>
+            </Row>
+          </Grid>
+        </Content>
+        <Footer />
+      </Page>
+    );
+  }
+}
+
+export default About;
