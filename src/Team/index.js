@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
+import renderHTML from "react-render-html";
 import { Page, Section, Title } from "../Styles";
 import Colors from "../Colors";
 import Footer from "../Footer";
@@ -282,14 +283,29 @@ const Position = styled.div`
 
 class Team extends React.Component {
   state = {
-    team: null
+    team: null,
+    about: ""
   };
 
   componentWillMount() {
-    fetch("http://radar.dubaua.ru/api/server.php?getTeam")
-      .then(res => res.json())
-      .then(response => {
-        this.setState({ team: response.team });
+    fetch(
+      `http://radarapi.dubaua.ru/api/collections/get/team?token=${
+        process.env.REACT_APP_COCKPIT_KEY
+      }`
+    )
+      .then(response => response.json())
+      .then(blob => {
+        this.setState({ team: blob.entries });
+      });
+
+    fetch(
+      `http://radarapi.dubaua.ru/api/regions/data/aboutTeam?token=${
+        process.env.REACT_APP_COCKPIT_KEY
+      }`
+    )
+      .then(response => response.json())
+      .then(blob => {
+        this.setState({ about: blob.content });
       });
   }
 
@@ -303,14 +319,7 @@ class Team extends React.Component {
                 <Col xs={7}>
                   <Title>Команда</Title>
                 </Col>
-                <Col xs={5}>
-                  <p>
-                    Наше агентство всегда открыто для перспективных
-                    специалистов. Если вы&nbsp;хотите работать в&nbsp;команде
-                    RADAR, присылайте свое резюме на&nbsp;адрес
-                    <a href="mailto:job@radar-online.ru">job@radar-online.ru</a>
-                  </p>
-                </Col>
+                <Col xs={5}>{renderHTML(this.state.about)}</Col>
               </Row>
             </Header>
             <Row>
@@ -318,7 +327,10 @@ class Team extends React.Component {
                 this.state.team.map((member, index) => (
                   <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
                     <Member>
-                      <Photo src={member.imageUrl} alt={member.name} />
+                      <Photo
+                        src={"http://radarapi.dubaua.ru/" + member.photo.path}
+                        alt={member.name}
+                      />
                       <Overlay>
                         <Name>{member.name}</Name>
                         <Position>{member.position}</Position>
