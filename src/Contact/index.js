@@ -1,7 +1,7 @@
 import React from "react";
 import { Page, Section } from "../Styles";
 import Locations from "./Locations";
-import Feedback from "./Feedback";
+// import Feedback from "./Feedback";
 import Footer from "../Footer";
 
 export default () => {
@@ -10,9 +10,9 @@ export default () => {
       <Section>
         <Locations />
       </Section>
-      <Section>
+      {/* <Section>
         <Feedback />
-      </Section>
+      </Section> */}
       <Footer />
     </Page>
   );
