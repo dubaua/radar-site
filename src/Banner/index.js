@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Grid } from "react-flexbox-grid";
 import styled from "styled-components";
+import RootPath from "../RootPath";
 
 const Background = styled.div`
   background-color: ${props => (props.inverse ? "white" : "black")};
@@ -25,7 +26,7 @@ const Title = styled.div`
   max-width: 420px;
 `;
 
-const Description = styled.div`
+const Prescription = styled.div`
   font-size: 20px;
   line-height: 1.3;
   max-width: 420px;
@@ -35,14 +36,14 @@ class Banner extends Component {
   render() {
     const banner = this.props.data;
     const style = {
-      backgroundImage: "url(" + banner.imageUrl + ")"
+      backgroundImage: "url(" + RootPath + banner.header.path + ")"
     };
     return (
       <Background inverse={banner.isInverse} style={style}>
         <Grid>
           <Spotlight>
             <Title>{banner.title}</Title>
-            <Description>{banner.description}</Description>
+            <Prescription>{banner.prescription}</Prescription>
           </Spotlight>
         </Grid>
       </Background>

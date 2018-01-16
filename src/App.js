@@ -17,7 +17,7 @@ const Page = styled.div`
 
   & :focus {
     outline: none;
-    box-shadow: 0 0 2px 1px ${Colors.scarlet};
+    /* box-shadow: 0 0 2px 1px ${Colors.scarlet}; */
   }
   & ::selection {
     background: ${Colors.scarlet};

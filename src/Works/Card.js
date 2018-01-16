@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Colors from "../Colors";
 import { Link as RLink } from "react-router-dom";
+import RootPath from "../RootPath";
 import styled from "styled-components";
 
 const Link = styled(RLink)`
@@ -43,7 +44,7 @@ const Title = styled.h3`
   margin-bottom: 16px;
 `;
 
-const Description = styled.p`
+const Prescription = styled.p`
   font-size: 15px;
   line-height: 1.3;
 `;
@@ -53,10 +54,10 @@ class Card extends Component {
     const card = this.props.data;
     return (
       <Link to={"/works/" + card.slug}>
-        <Cover src={card.previewUrl} />
+        <Cover src={RootPath + card.cover.path} />
         <Overlay>
           <Title>{card.title}</Title>
-          <Description>{card.description}</Description>
+          <Prescription>{card.prescription}</Prescription>
         </Overlay>
       </Link>
     );

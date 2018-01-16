@@ -11,6 +11,7 @@ import Banner from "../Banner";
 import Locations from "../Contact/Locations";
 import Footer from "../Footer";
 import styled from "styled-components";
+import RootPath from "../RootPath";
 
 const Wrapper = styled.div``;
 
@@ -35,49 +36,6 @@ const Button = styled(RLink)`
     background: ${Colors.scarlet};
   }
 `;
-
-const banners = [
-  {
-    title: "Интегрированная кампания «Парк Гагарина»",
-    imageUrl: require("../img/head.jpg"),
-    slug: "gagarin-park",
-    description:
-      "Навигационная система для парка Гагарина в офлайне и онлайне. Приложение вошло в рейтинг «Лучшие новые приложения» App Store."
-  },
-  {
-    title: "Андродоз",
-    imageUrl: require("../img/androdoz.jpg"),
-    slug: "androdoz",
-    description: "Упаковка препарата для STADA"
-  },
-  {
-    title: "Ariant Premium",
-    imageUrl: require("../img/main_sl_9.jpg"),
-    slug: "ariant-premium",
-    description: "Новогодний имиджевый ролик"
-  },
-  {
-    title: "Scovo",
-    imageUrl: require("../img/main_sl_2.jpg"),
-    slug: "scovo",
-    description: "Разработка дизайна упаковки линеек сковород"
-  },
-  {
-    title: "Калинка",
-    imageUrl: require("../img/main_sl_10.jpg"),
-    slug: "kalinka",
-    description:
-      "Разработка платформы бренда и рекламная кампания «Мамина забота не знает границ»"
-  },
-  {
-    title: "Тесто + Мясо",
-    imageUrl: require("../img/main_sl_4.jpg"),
-    slug: "testo-myaso",
-    description:
-      "Разработка торговой марки и рекламных материалов для линейки полуфабрикатов",
-    isInverse: true
-  }
-];
 
 const clients = [
   require("../img/clients/01.jpg"),
@@ -365,44 +323,49 @@ const works = [
   // }
 ];
 
-const tags = [
-  {
-    id: 1,
-    slug: "branding",
-    title: "Брендинг"
-  },
-  {
-    id: 2,
-    slug: "campaign",
-    title: "Кампании"
-  },
-  {
-    id: 3,
-    slug: "video",
-    title: "Видео"
-  },
-  {
-    id: 4,
-    slug: "digital",
-    title: "Digital"
-  },
-  {
-    id: 5,
-    slug: "design",
-    title: "Дизайн"
-  },
-  {
-    id: 6,
-    slug: "event",
-    title: "События"
-  }
-];
-
 class Home extends Component {
   state = {
-    tags: tags,
+    banners: null,
+    works: null,
+    tags: null,
+    clients: null,
     currentTag: "Все"
   };
+
+  componentDidMount() {
+    fetch(
+      `${RootPath}api/collections/get/works?token=${
+        process.env.REACT_APP_COCKPIT_KEY
+      }`
+    )
+      .then(response => response.json())
+      .then(blob => {
+        this.setState({
+          works: blob.entries,
+          banners: blob.entries.filter(work => work.isFeatured)
+        });
+      });
+
+    fetch(
+      `${RootPath}api/collections/get/tags?token=${
+        process.env.REACT_APP_COCKPIT_KEY
+      }`
+    )
+      .then(response => response.json())
+      .then(blob => {
+        this.setState({ tags: blob.entries });
+      });
+
+    fetch(
+      `${RootPath}api/collections/get/clients?token=${
+        process.env.REACT_APP_COCKPIT_KEY
+      }`
+    )
+      .then(response => response.json())
+      .then(blob => {
+        this.setState({ clients: blob.entries });
+      });
+  }
 
   toggleFilter = tag => {
     this.setState(prevState => ({
@@ -464,11 +427,12 @@ class Home extends Component {
           pagination={spotlightParams.pagination}
           navigation={spotlightParams.navigation}
         >
-          {banners.map((banner, index) => (
-            <div className="swiper-slide" key={index.toString()}>
-              <Banner data={banner} />
-            </div>
-          ))}
+          {this.state.banners &&
+            this.state.banners.map((banner, index) => (
+              <div className="swiper-slide" key={index.toString()}>
+                <Banner data={banner} />
+              </div>
+            ))}
         </Swiper>
         <Section>
           <Grid>
@@ -481,14 +445,15 @@ class Home extends Component {
                 >
                   Все
                 </Toggle>
-                {this.state.tags.map((tag, index) => (
-                  <Filter
-                    key={index.toString()}
-                    onToggle={this.toggleFilter}
-                    filter={tag}
-                    currentTag={this.state.currentTag}
-                  />
-                ))}
+                {this.state.tags &&
+                  this.state.tags.map((tag, index) => (
+                    <Filter
+                      key={index.toString()}
+                      onToggle={this.toggleFilter}
+                      filter={tag}
+                      currentTag={this.state.currentTag}
+                    />
+                  ))}
               </Tags>
               <Route
                 exact
@@ -497,24 +462,33 @@ class Home extends Component {
               />
             </Header>
             <Row>
-              {filteredWorks.map((work, index) => (
-                <Col xs={6} md={4} lg={3} key={index.toString()}>
-                  <Card data={work} />
-                </Col>
-              ))}
+              {this.state.works &&
+                this.state.works.map((work, index) => (
+                  <Col xs={6} md={4} lg={3} key={index.toString()}>
+                    <Card data={work} />
+                  </Col>
+                ))}
             </Row>
           </Grid>
         </Section>
         <Section>
           <Grid>
             <Title>Наши клиенты</Title>
-            <Swiper {...clientsParams}>
-              {clients.map((client, index) => (
-                <div className="swiper-slide" key={index.toString()}>
-                  <Client src={client} />
-                </div>
-              ))}
-            </Swiper>
+            {this.state.clients && (
+              <Swiper {...clientsParams}>
+                {this.state.clients.map(
+                  (client, index) =>
+                    !client.isHidden && (
+                      <div className="swiper-slide" key={index.toString()}>
+                        <Client
+                          src={RootPath + client.logo.path}
+                          alt={client.title}
+                        />
+                      </div>
+                    )
+                )}
+              </Swiper>
+            )}
           </Grid>
         </Section>
         <Section last>
