@@ -6,6 +6,7 @@ import GoogleMapReact from "google-map-react";
 import Colors from "../Colors";
 import styled from "styled-components";
 import mapOptions from "./mapOptions";
+import RootPath from "../RootPath";
 
 const Location = styled.div`
   font-size: 18px;
@@ -43,7 +44,7 @@ class Locations extends Component {
 
   componentWillMount() {
     fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/locations?token=${
+      `${RootPath}api/collections/get/locations?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )

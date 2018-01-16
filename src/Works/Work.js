@@ -31,7 +31,7 @@ class Work extends React.Component {
     const slug = this.props.location.pathname.replace(/\/works\//g, "");
     console.log(slug);
     fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/works?token=${
+      `${RootPath}api/collections/get/works?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )

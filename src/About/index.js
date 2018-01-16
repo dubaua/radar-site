@@ -5,6 +5,7 @@ import { Title } from "../Styles";
 import Footer from "../Footer";
 import styled from "styled-components";
 import backgroundImage from "./about-bg.jpg";
+import RootPath from "../RootPath";
 
 const Page = styled.div`
   background-image: url(${backgroundImage});
@@ -34,7 +35,7 @@ class About extends React.Component {
 
   componentWillMount() {
     fetch(
-      `http://radarapi.dubaua.ru/api/regions/data/aboutUs?token=${
+      `${RootPath}api/regions/data/aboutUs?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )

@@ -1,1 +1,1 @@
-export default "http://radarapi.dubaua.ru/";
+export default "http://radarapi.dubaua.ru/cockpit/";
