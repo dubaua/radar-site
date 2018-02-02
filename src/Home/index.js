@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import { Route, Link as RLink } from "react-router-dom";
 import { Title, Header, Section, Tags, Toggle } from "../Styles";
+import { Lg } from "../Media";
 import "swiper/dist/css/swiper.min.css";
 import Card from "../Works/Card";
 import Filter from "../Works/Filter";
@@ -11,7 +12,6 @@ import Banner from "../Banner";
 import Locations from "../Contact/Locations";
 import Footer from "../Footer";
 import styled from "styled-components";
-import RootPath from "../RootPath";
 
 const Wrapper = styled.div``;
 
@@ -48,7 +48,7 @@ class Home extends Component {
 
   componentDidMount() {
     fetch(
-      `${RootPath}api/collections/get/works?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/works?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -61,7 +61,7 @@ class Home extends Component {
       });
 
     fetch(
-      `${RootPath}api/collections/get/tags?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/tags?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -71,7 +71,7 @@ class Home extends Component {
       });
 
     fetch(
-      `${RootPath}api/collections/get/clients?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/clients?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -146,28 +146,31 @@ class Home extends Component {
           <Grid>
             <Header>
               <Title>Работы</Title>
-              <Tags>
-                <Toggle
-                  onClick={this.resetFilters}
-                  active={this.state.currentTag === "Все"}
-                >
-                  Все
-                </Toggle>
-                {this.state.tags &&
-                  this.state.tags.map((tag, index) => (
-                    <Filter
-                      key={index.toString()}
-                      onToggle={this.toggleFilter}
-                      filter={tag}
-                      currentTag={this.state.currentTag}
-                    />
-                  ))}
-              </Tags>
-              <Route
-                exact
-                path="/"
-                render={() => <Button to="works">Все работы</Button>}
-              />
+              <Lg>
+                <Tags>
+                  <Toggle
+                    onClick={this.resetFilters}
+                    active={this.state.currentTag === "Все"}
+                  >
+                    Все
+                  </Toggle>
+                  {this.state.tags &&
+                    this.state.tags.map((tag, index) => (
+                      <Filter
+                        key={index.toString()}
+                        onToggle={this.toggleFilter}
+                        filter={tag}
+                        currentTag={this.state.currentTag}
+                      />
+                    ))}
+                </Tags>
+
+                <Route
+                  exact
+                  path="/"
+                  render={() => <Button to="works">Все работы</Button>}
+                />
+              </Lg>
             </Header>
             <Row>
               {this.state.works &&
@@ -189,7 +192,7 @@ class Home extends Component {
                     !client.isHidden && (
                       <div className="swiper-slide" key={index.toString()}>
                         <Client
-                          src={RootPath + client.logo.path}
+                          src={"http://radarapi.dubaua.ru/" + client.logo.path}
                           alt={client.title}
                         />
                       </div>

@@ -1,26 +1,36 @@
 import React, { Component } from "react";
-import { Grid } from "react-flexbox-grid";
+import { Grid, Row, Col } from "react-flexbox-grid";
 import renderHTML from "react-render-html";
-import { Title, Header, Section, Toggle } from "../Styles";
+import { Title, Section, Toggle } from "../Styles";
 import GoogleMapReact from "google-map-react";
 import Colors from "../Colors";
 import styled from "styled-components";
 import mapOptions from "./mapOptions";
-import RootPath from "../RootPath";
 
-const Location = styled.div`
-  font-size: 18px;
-  display: flex;
+const Header = styled(Row)`
   align-items: baseline;
-  margin-left: 32px;
+  margin-bottom: 32px;
+`;
+
+const Filter = styled.div`
+  margin: 16px -8px;
+  @media screen and (min-width: 768px) {
+    margin: 0;
+  }
 `;
 
 const Address = styled.address`
   font-style: normal;
-  margin-left: 32px;
+`;
+
+const Contact = styled.address`
+  font-style: normal;
   & a {
     display: block;
     color: inherit;
+  }
+  @media screen and (min-width: 768px) {
+    text-align: right;
   }
 `;
 
@@ -44,7 +54,7 @@ class Locations extends Component {
 
   componentWillMount() {
     fetch(
-      `${RootPath}api/collections/get/locations?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/locations?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -60,42 +70,50 @@ class Locations extends Component {
   render() {
     return (
       <Section last>
-        <Grid>
-          {this.state.locations &&
-            this.state.currentLocation && (
+        {this.state.locations &&
+          this.state.currentLocation && (
+            <Grid>
               <Header>
-                <Title>Контакты</Title>
-                <Location>
-                  {this.state.locations.map((location, index) => (
-                    <Toggle
-                      key={index.toString()}
-                      onClick={() => {
-                        this.setState({
-                          currentLocation: location
-                        });
-                      }}
-                      active={
-                        this.state.currentLocation.title === location.title
-                      }
-                    >
-                      {location.title}
-                    </Toggle>
-                  ))}
-                </Location>
-                <Address>
-                  {renderHTML(this.state.currentLocation.address)}
-                </Address>
-                <Address>
-                  <a href={"tel:+" + this.state.currentLocation.phoneLink}>
-                    {this.state.currentLocation.phone}
-                  </a>
-                  <a href={"mailto:" + this.state.currentLocation.email}>
-                    {this.state.currentLocation.email}
-                  </a>
-                </Address>
+                <Col xs={12} md={3} lg={2}>
+                  <Title>Контакты</Title>
+                </Col>
+                <Col xs={12} md={9} lg={2} xl={3}>
+                  <Filter>
+                    {this.state.locations.map((location, index) => (
+                      <Toggle
+                        key={index.toString()}
+                        onClick={() => {
+                          this.setState({
+                            currentLocation: location
+                          });
+                        }}
+                        active={
+                          this.state.currentLocation.title === location.title
+                        }
+                      >
+                        {location.title}
+                      </Toggle>
+                    ))}
+                  </Filter>
+                </Col>
+                <Col xs={12} md={9} lg={6} xl={5}>
+                  <Address>
+                    {renderHTML(this.state.currentLocation.address)}
+                  </Address>
+                </Col>
+                <Col xs={12} md={3} lg={2}>
+                  <Contact>
+                    <a href={"tel:+" + this.state.currentLocation.phoneLink}>
+                      {this.state.currentLocation.phone}
+                    </a>
+                    <a href={"mailto:" + this.state.currentLocation.email}>
+                      {this.state.currentLocation.email}
+                    </a>
+                  </Contact>
+                </Col>
               </Header>
-            )}
-        </Grid>
+            </Grid>
+          )}
         <GoogleMap>
           {this.state.currentLocation && (
             <GoogleMapReact

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Colors from "../Colors";
 import { Link as RLink } from "react-router-dom";
-import RootPath from "../RootPath";
+
 import styled from "styled-components";
 
 const Link = styled(RLink)`
@@ -54,7 +54,7 @@ class Card extends Component {
     const card = this.props.data;
     return (
       <Link to={"/works/" + card.slug}>
-        <Cover src={RootPath + card.cover.path} />
+        <Cover src={"http://radarapi.dubaua.ru/" + card.cover.path} />
         <Overlay>
           <Title>{card.title}</Title>
           <Prescription>{card.prescription}</Prescription>

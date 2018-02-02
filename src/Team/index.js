@@ -4,7 +4,7 @@ import renderHTML from "react-render-html";
 import { Page, Section, Title } from "../Styles";
 import Colors from "../Colors";
 import Footer from "../Footer";
-import RootPath from "../RootPath";
+
 import styled from "styled-components";
 
 const Header = styled.div`
@@ -63,7 +63,7 @@ class Team extends React.Component {
 
   componentWillMount() {
     fetch(
-      `${RootPath}api/collections/get/team?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/team?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -73,7 +73,7 @@ class Team extends React.Component {
       });
 
     fetch(
-      `${RootPath}api/regions/data/aboutTeam?token=${
+      `http://radarapi.dubaua.ru/api/regions/data/aboutTeam?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -90,10 +90,12 @@ class Team extends React.Component {
           <Grid>
             <Header>
               <Row middle="xs">
-                <Col xs={7}>
+                <Col xs={12} md={7}>
                   <Title>Команда</Title>
                 </Col>
-                <Col xs={5}>{renderHTML(this.state.about)}</Col>
+                <Col xs={12} md={5}>
+                  {renderHTML(this.state.about)}
+                </Col>
               </Row>
             </Header>
             <Row>
@@ -102,7 +104,7 @@ class Team extends React.Component {
                   <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
                     <Member>
                       <Photo
-                        src={RootPath + member.photo.path}
+                        src={"http://radarapi.dubaua.ru/" + member.photo.path}
                         alt={member.name}
                       />
                       <Overlay>

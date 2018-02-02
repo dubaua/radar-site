@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Grid } from "react-flexbox-grid";
 import styled from "styled-components";
-import RootPath from "../RootPath";
 
 const Background = styled.div`
   background-color: ${props => (props.inverse ? "white" : "black")};
@@ -36,7 +35,8 @@ class Banner extends Component {
   render() {
     const banner = this.props.data;
     const style = {
-      backgroundImage: "url(" + RootPath + banner.header.path + ")"
+      backgroundImage:
+        "url(http://radarapi.dubaua.ru/" + banner.header.path + ")"
     };
     return (
       <Background inverse={banner.isInverse} style={style}>

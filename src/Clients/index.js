@@ -3,7 +3,6 @@ import { Grid, Row, Col } from "react-flexbox-grid";
 import { Page, Section, Title } from "../Styles";
 import Footer from "../Footer";
 import styled from "styled-components";
-import RootPath from "../RootPath";
 
 const Header = styled.div`
   margin-bottom: 24px;
@@ -27,7 +26,7 @@ class Clients extends React.Component {
 
   componentWillMount() {
     fetch(
-      `${RootPath}api/collections/get/clients?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/clients?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -37,7 +36,7 @@ class Clients extends React.Component {
       });
 
     fetch(
-      `${RootPath}api/regions/data/aboutClients?token=${
+      `http://radarapi.dubaua.ru/api/regions/data/aboutClients?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -54,10 +53,10 @@ class Clients extends React.Component {
           <Grid>
             <Header>
               <Row middle="xs">
-                <Col xs={7}>
+                <Col xs={12} md={7}>
                   <Title>Наши клиенты</Title>
                 </Col>
-                <Col xs={5}>
+                <Col xs={12} md={5}>
                   <p>Текст о клиентах</p>
                 </Col>
               </Row>
@@ -68,7 +67,7 @@ class Clients extends React.Component {
                   <Col xs={6} sm={4} md={3} lg={2} key={index.toString()}>
                     <Client>
                       <Logo
-                        src={RootPath + client.logo.path}
+                        src={"http://radarapi.dubaua.ru/" + client.logo.path}
                         alt={client.name}
                       />
                     </Client>

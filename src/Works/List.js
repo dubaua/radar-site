@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import queryString from "query-string";
 import _ from "lodash";
-import RootPath from "../RootPath";
+import { Lg } from "../Media";
 import { Page, Section, Title, Header, Tags } from "../Styles";
 import Colors from "../Colors";
 import Card from "./Card";
@@ -46,7 +46,7 @@ class Works extends Component {
 
   componentDidMount() {
     fetch(
-      `${RootPath}api/collections/get/works?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/works?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -56,7 +56,7 @@ class Works extends Component {
       });
 
     fetch(
-      `${RootPath}api/collections/get/tags?token=${
+      `http://radarapi.dubaua.ru/api/collections/get/tags?token=${
         process.env.REACT_APP_COCKPIT_KEY
       }`
     )
@@ -88,27 +88,29 @@ class Works extends Component {
           <Grid>
             <Header>
               <Title>Работы</Title>
-              <Tags>
-                <Toggle
-                  to={{ pathname: match.url }}
-                  isActive={() => !currentTag}
-                >
-                  Все
-                </Toggle>
-                {this.state.tags ? (
-                  this.state.tags.map((tag, index) => (
-                    <Toggle
-                      to={{ pathname: match.url, query: { tag: tag.slug } }}
-                      isActive={() => tag.slug === currentTag}
-                      key={index.toString()}
-                    >
-                      {tag.title}
-                    </Toggle>
-                  ))
-                ) : (
-                  <div>Loading</div>
-                )}
-              </Tags>
+              <Lg>
+                <Tags>
+                  <Toggle
+                    to={{ pathname: match.url }}
+                    isActive={() => !currentTag}
+                  >
+                    Все
+                  </Toggle>
+                  {this.state.tags ? (
+                    this.state.tags.map((tag, index) => (
+                      <Toggle
+                        to={{ pathname: match.url, query: { tag: tag.slug } }}
+                        isActive={() => tag.slug === currentTag}
+                        key={index.toString()}
+                      >
+                        {tag.title}
+                      </Toggle>
+                    ))
+                  ) : (
+                    <div>Loading</div>
+                  )}
+                </Tags>
+              </Lg>
             </Header>
             <Row>
               {filteredWorks &&
