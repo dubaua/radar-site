@@ -7,10 +7,10 @@ const Wrapper = styled.div`
     margin-top: 0;
   }
   * + * {
-    margin-top: 1em;
+    margin: 1.25em 0;
   }
 `;
 
-const Typo = ({ children }) => <Wrapper>{renderHTML(children)}</Wrapper>;
+const Typographic = ({ children }) => <Wrapper>{renderHTML(children)}</Wrapper>;
 
-export default Typo;
+export default Typographic;

@@ -5,7 +5,7 @@ import _ from "lodash";
 import Image from "../UI/Image";
 import Gallery from "../UI/Gallery";
 import HTML from "../UI/HTML";
-import Typo from "../UI/Typo";
+import Typographic from "../UI/Typographic";
 import Banner from "../Banner";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
@@ -16,7 +16,35 @@ const Case = styled.section`
   margin: 60px 0;
 `;
 
-const Description = styled.div``;
+const Description = styled(Col)`
+  position: relative;
+  z-index: 20;
+`;
+
+const Spoiler = styled.div`
+  background: white;
+  box-sizing: border-box;
+  height: ${props => (props.active ? "auto" : "470px")};
+  left: 0;
+  overflow: ${props => (props.active ? "visible" : "hidden")};
+  padding-bottom: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+`;
+
+const Toggle = styled.div`
+  background: white;
+  bottom: 0;
+  color: ${Colors.dust};
+  cursor: pointer;
+  padding: 16px 0;
+  position: absolute;
+  text-decoration: underline;
+  width: 100%;
+  z-index: 2;
+`;
 
 const Section = styled.div`
   margin-bottom: 16px;
@@ -28,12 +56,16 @@ const Section = styled.div`
   }
 `;
 
+const Dates = styled.time`
+  display: block;
+  color: ${Colors.dust};
+  margin: 16px 0;
+  font-size: 16px;
+`;
+
 const Logo = styled.div`
   text-align: right;
   margin-bottom: 16px;
-  @media screen and (min-width: 768px) {
-    margin-bottom: 0;
-  }
 `;
 
 const Client = styled.section`
@@ -62,7 +94,8 @@ const Tag = styled(Link)`
 
 class Work extends React.Component {
   state = {
-    work: null
+    work: null,
+    isOpen: false
   };
 
   componentWillMount() {
@@ -116,11 +149,21 @@ class Work extends React.Component {
           <Case>
             <Grid>
               <Row>
-                <Col xs={12} md={6} lg={4}>
-                  <Description>
-                    <Typo>{work.about}</Typo>
-                  </Description>
-                </Col>
+                <Description xs={12} md={6} lg={4}>
+                  <Spoiler active={this.state.isOpen}>
+                    <Typographic>{work.about}</Typographic>
+                    <Dates>{work.dates}</Dates>
+                    <Toggle
+                      onClick={() =>
+                        this.setState({
+                          isOpen: !this.state.isOpen
+                        })
+                      }
+                    >
+                      {this.state.isOpen ? "свернуть" : "Читать далее"}
+                    </Toggle>
+                  </Spoiler>
+                </Description>
                 <Col xs={12} md={6} lg={8}>
                   <Logo>
                     <Image src={work.logo.path} alt={work.title} />
@@ -162,7 +205,7 @@ class Work extends React.Component {
                 </Col>
                 <Col xs={12} md={6}>
                   <Team>
-                    <Typo>{work.team}</Typo>
+                    <Typographic>{work.team}</Typographic>
                   </Team>
                 </Col>
                 <Col xs={12} md={3}>
@@ -184,7 +227,7 @@ class Work extends React.Component {
                   </ClientLogo>
                 </Col>
                 <Col xs={12} md={6}>
-                  <Typo>{work.clientAbout}</Typo>
+                  <Typographic>{work.clientAbout}</Typographic>
                 </Col>
               </Row>
             </Grid>
