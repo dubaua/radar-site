@@ -1,7 +1,7 @@
 import React from "react";
 import MediaQuery from "react-responsive";
 
-const bp = {
+export const bp = {
   sm: 576,
   md: 768,
   lg: 992,

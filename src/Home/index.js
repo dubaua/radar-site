@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import { Route, Link as RLink } from "react-router-dom";
-import { Title, Header, Section, Tags, Toggle } from "../Styles";
+import { Title, Header, Section, Tags } from "../Styles";
 import { Lg } from "../Media";
 import "swiper/dist/css/swiper.min.css";
 import Card from "../Works/Card";
-import Filter from "../Works/Filter";
+import { NavLink } from "react-router-dom";
 import Swiper from "react-id-swiper";
 import Colors from "../Colors";
 import Banner from "../Banner";
 import Locations from "../Contact/Locations";
 import Footer from "../Footer";
+import queryString from "query-string";
+import _ from "lodash";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
@@ -37,6 +39,32 @@ const Button = styled(RLink)`
   }
 `;
 
+const QueryLink = props => (
+  <NavLink
+    {...props}
+    to={{ ...props.to, search: queryString.stringify(props.to.query) }}
+  />
+);
+
+const Toggle = styled(QueryLink)`
+  background: none;
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 18px;
+  padding: 4px 8px;
+  position: relative;
+  text-decoration: none;
+  &.active {
+    border-color: ${Colors.scarlet};
+  }
+  &:hover {
+    color: ${Colors.scarlet};
+  }
+`;
+
 class Home extends Component {
   state = {
     banners: null,
@@ -47,38 +75,26 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/works?token=${
-        process.env.REACT_APP_COCKPIT_KEY
-      }`
-    )
-      .then(response => response.json())
-      .then(blob => {
-        this.setState({
-          works: blob.entries,
-          banners: blob.entries.filter(work => work.isFeatured)
-        });
-      });
+    const urls = [
+      "http://radarapi.dubaua.ru/api/collections/get/works",
+      "http://radarapi.dubaua.ru/api/collections/get/tags",
+      "http://radarapi.dubaua.ru/api/collections/get/clients"
+    ];
 
-    fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/tags?token=${
-        process.env.REACT_APP_COCKPIT_KEY
-      }`
-    )
-      .then(response => response.json())
-      .then(blob => {
-        this.setState({ tags: blob.entries });
-      });
+    const grabContent = url =>
+      fetch(url + `?token=${process.env.REACT_APP_COCKPIT_KEY}`)
+        .then(response => response.json())
+        .then(blob => blob.entries);
 
-    fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/clients?token=${
-        process.env.REACT_APP_COCKPIT_KEY
-      }`
-    )
-      .then(response => response.json())
-      .then(blob => {
-        this.setState({ clients: blob.entries });
+    Promise.all(urls.map(grabContent)).then(response => {
+      const [works, tags, clients] = response;
+      this.setState({
+        works,
+        tags,
+        clients,
+        banners: works.filter(work => work.isFeatured)
       });
+    });
   }
 
   toggleFilter = tag => {
@@ -92,6 +108,20 @@ class Home extends Component {
     this.setState({ currentTag: "Все" });
   };
   render() {
+    const match = this.props.match;
+    const currentTagSlug = queryString.parse(this.props.location.search).tag;
+    const currentTag = _.find(
+      this.state.tags,
+      tag => tag.slug === currentTagSlug
+    );
+    const filteredWorks =
+      this.state.works &&
+      this.state.works.filter(
+        work =>
+          currentTag
+            ? _.findIndex(work.tags, tag => tag._id === currentTag._id) !== -1
+            : true
+      );
     const spotlightParams = {
       speed: 400,
       autoplay: {
@@ -130,18 +160,19 @@ class Home extends Component {
     };
     return (
       <Wrapper>
-        <Swiper
-          {...spotlightParams}
-          pagination={spotlightParams.pagination}
-          navigation={spotlightParams.navigation}
-        >
-          {this.state.banners &&
-            this.state.banners.map((banner, index) => (
+        {this.state.banners && (
+          <Swiper
+            {...spotlightParams}
+            pagination={spotlightParams.pagination}
+            navigation={spotlightParams.navigation}
+          >
+            {this.state.banners.map((banner, index) => (
               <div className="swiper-slide" key={index.toString()}>
                 <Banner data={banner} />
               </div>
             ))}
-        </Swiper>
+          </Swiper>
+        )}
         <Section>
           <Grid>
             <Header>
@@ -149,20 +180,26 @@ class Home extends Component {
               <Lg>
                 <Tags>
                   <Toggle
-                    onClick={this.resetFilters}
-                    active={this.state.currentTag === "Все"}
+                    to={{ pathname: match.url }}
+                    isActive={() => !currentTag}
                   >
                     Все
                   </Toggle>
-                  {this.state.tags &&
+                  {this.state.tags ? (
                     this.state.tags.map((tag, index) => (
-                      <Filter
+                      <Toggle
+                        to={{ pathname: match.url, query: { tag: tag.slug } }}
+                        isActive={() =>
+                          currentTag && tag.slug === currentTag.slug
+                        }
                         key={index.toString()}
-                        onToggle={this.toggleFilter}
-                        filter={tag}
-                        currentTag={this.state.currentTag}
-                      />
-                    ))}
+                      >
+                        {tag.title}
+                      </Toggle>
+                    ))
+                  ) : (
+                    <div>Loading</div>
+                  )}
                 </Tags>
 
                 <Route
@@ -173,8 +210,8 @@ class Home extends Component {
               </Lg>
             </Header>
             <Row>
-              {this.state.works &&
-                this.state.works.map((work, index) => (
+              {filteredWorks &&
+                filteredWorks.map((work, index) => (
                   <Col xs={6} md={4} lg={3} key={index.toString()}>
                     <Card data={work} />
                   </Col>

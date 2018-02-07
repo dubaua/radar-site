@@ -45,29 +45,26 @@ class Works extends Component {
   };
 
   componentDidMount() {
-    fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/works?token=${
-        process.env.REACT_APP_COCKPIT_KEY
-      }`
-    )
-      .then(response => response.json())
-      .then(blob => {
-        this.setState({ works: blob.entries });
-      });
+    const urls = [
+      "http://radarapi.dubaua.ru/api/collections/get/works",
+      "http://radarapi.dubaua.ru/api/collections/get/tags"
+    ];
 
-    fetch(
-      `http://radarapi.dubaua.ru/api/collections/get/tags?token=${
-        process.env.REACT_APP_COCKPIT_KEY
-      }`
-    )
-      .then(response => response.json())
-      .then(blob => {
-        this.setState({ tags: blob.entries });
+    const grabContent = url =>
+      fetch(url + `?token=${process.env.REACT_APP_COCKPIT_KEY}`)
+        .then(response => response.json())
+        .then(blob => blob.entries);
+
+    Promise.all(urls.map(grabContent)).then(response => {
+      const [works, tags] = response;
+      this.setState({
+        works,
+        tags
       });
+    });
   }
 
   render() {
-    console.log("render");
     const match = this.props.match;
     const currentTagSlug = queryString.parse(this.props.location.search).tag;
     const currentTag = _.find(
@@ -100,7 +97,9 @@ class Works extends Component {
                     this.state.tags.map((tag, index) => (
                       <Toggle
                         to={{ pathname: match.url, query: { tag: tag.slug } }}
-                        isActive={() => tag.slug === currentTag}
+                        isActive={() =>
+                          currentTag && tag.slug === currentTag.slug
+                        }
                         key={index.toString()}
                       >
                         {tag.title}

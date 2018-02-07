@@ -30,13 +30,14 @@ const Overlay = styled.div`
   background: ${Colors.woodsmoke};
   bottom: 0;
   color: white;
+  cursor: pointer;
   left: 0;
   line-height: 1;
   opacity: 0;
+  padding: 20px;
   position: absolute;
   right: 0;
   top: 0;
-  padding: 20px;
   transition: all 0.2s ease-in-out;
   &:hover {
     opacity: 1;

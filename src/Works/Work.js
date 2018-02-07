@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import styled from "styled-components";
 import Colors from "../Colors";
+import { bp, Md } from "../Media";
 
 const Case = styled.section`
   margin: 60px 0;
@@ -22,16 +23,23 @@ const Description = styled(Col)`
 `;
 
 const Spoiler = styled.div`
-  background: white;
-  box-sizing: border-box;
-  height: ${props => (props.active ? "auto" : "470px")};
-  left: 0;
-  overflow: ${props => (props.active ? "visible" : "hidden")};
-  padding-bottom: 40px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 1;
+  @media screen and (min-width: ${bp.md}px) {
+    background: white;
+    box-sizing: border-box;
+    height: auto;
+    overflow: ${props => (props.active ? "visible" : "hidden")};
+    padding-bottom: 40px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    height: ${props => (props.active ? "auto" : "250px")};
+  }
+  @media screen and (min-width: ${bp.lg}px) {
+    height: ${props => (props.active ? "auto" : "438px")};
+  }
+  @media screen and (min-width: ${bp.xl}px) {
+    height: ${props => (props.active ? "auto" : "470px")};
+  }
 `;
 
 const Toggle = styled.div`
@@ -39,11 +47,14 @@ const Toggle = styled.div`
   bottom: 0;
   color: ${Colors.dust};
   cursor: pointer;
-  padding: 16px 0;
+  padding: 20px 0;
   position: absolute;
   text-decoration: underline;
   width: 100%;
   z-index: 2;
+  @media screen and (min-width: ${bp.xl}px) {
+    padding: 16px 0;
+  }
 `;
 
 const Section = styled.div`
@@ -153,15 +164,17 @@ class Work extends React.Component {
                   <Spoiler active={this.state.isOpen}>
                     <Typographic>{work.about}</Typographic>
                     <Dates>{work.dates}</Dates>
-                    <Toggle
-                      onClick={() =>
-                        this.setState({
-                          isOpen: !this.state.isOpen
-                        })
-                      }
-                    >
-                      {this.state.isOpen ? "свернуть" : "Читать далее"}
-                    </Toggle>
+                    <Md>
+                      <Toggle
+                        onClick={() =>
+                          this.setState({
+                            isOpen: !this.state.isOpen
+                          })
+                        }
+                      >
+                        {this.state.isOpen ? "свернуть" : "Читать далее"}
+                      </Toggle>
+                    </Md>
                   </Spoiler>
                 </Description>
                 <Col xs={12} md={6} lg={8}>
